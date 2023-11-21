@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    width: 60%;
+    margin: 0 auto;
+    height: auto;
+    font-family: 'Open Sans', sans-serif;
+}
+.container_header{
+    height: 60px;
+    width: 100%;
+    background-color: rgb(175, 174, 174);
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    padding-left: 40px;
+    color: black;
+    border:2PX solid gray;
+    border-radius: 10PX;
+    margin-top: 20px;
+}
+.container_menu{
+    height: 40px;
+    background-color: black;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+.container_menu ul{
+    display: flex;
+}
+.container_menu ul li{
+    list-style: none;
+    padding-left: 40px;
+}
+.container_menu ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+.row_header{
+    height: 30px;
+    width: 100%;
+    background-color: rgb(175, 174, 174);
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    padding-left: 40px;
+    color: black;
+    border:2PX solid gray;
+    border-radius: 10PX;
+    margin-top: 20px;
+}
+.row{
+    margin-top: 20px;
+}
+.row_mb20{
+    margin-top: 10px;
+}
+.row_mb20 input{
+    width: 100%;
+
+}
+.row_mb21{
+    margin-top: 10px;
+}
+.row_mb21 input{
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: white;
+}
+.row_mb21 input:hover{
+    background-color: gray;
+    
+}
+
+
+.fomdsloai table{
+    width: 100%;
+    border-collapse: collapse;
+
+}
+.fomdsloai table  th{
+    background-color: #ccc;
+    padding: 20px;
+}
+
+.fomdsloai table td{
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+.fomdsloai table  th:nth-child(2){
+    width: 30%;
+    background-color: #ccc;
+}
+.fomdsloai table  th:nth-child(3){
+    width: 30%;
+    background-color: #ccc;
+}
+.fomdsloai table  th:nth-child(4){
+    width: 20%;
+    background-color: #ccc;
+}
+
+
+

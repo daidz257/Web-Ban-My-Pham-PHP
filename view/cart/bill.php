@@ -47,12 +47,13 @@
             <!--== End Checkout Coupon Accordion ==-->
         </div>
         <div class="row">
+        <form action="index.php?act=billconfirm" method="post">
             <div class="col-lg-6">
                 <!--== Start Billing Accordion ==-->
                 <div class="checkout-billing-details-wrap">
                     <h2 class="title">Billing details</h2>
                     <div class="billing-form-wrap">
-                        <form action="index.php?act=billconfirm" method="post">
+
                             <div class="row">
                                 <?php
                                 if(isset($_SESSION['user'])){
@@ -98,7 +99,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
                 <!--== End Billing Accordion ==-->
@@ -125,7 +126,7 @@
                             $ttien=$cart[3]*$cart[4];
                             $tong+=$ttien;
                             echo '                                <tr class="cart-item">
-                            <td class="product-name">Satin gown <span class="product-quantity">× '.$cart[4].'</span></td>
+                            <td class="product-name">'.$cart[1].' <span class="product-quantity">× '.$cart[4].'</span></td>
                             <td class="product-total">£'.$ttien.'đ</td>
                         </tr>';
                         }
@@ -191,7 +192,7 @@
                     </div>
                 </div>
                 <!--== End Order Details Accordion ==-->
-            </div>
+            </div></form>
         </div>
     </div>
 </section>

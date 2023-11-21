@@ -56,35 +56,34 @@
                                             <table class="table table-bordered">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th>Order</th>
-                                                        <th>Date</th>
-                                                        <th>Status</th>
-                                                        <th>Total</th>
+                                                        <th>Mã đơn</th>
+                                                        <th>Ngày đặt</th>
+                                                        <th>Số lượng mặt hàng</th>
+                                                        <th>Tình trạng đơn hàng</th>
+                                                        <th>Tổng giá trị</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Aug 22, 2018</td>
-                                                        <td>Pending</td>
-                                                        <td>$3000</td>
-                                                        <td><a href="shop-cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>July 22, 2018</td>
-                                                        <td>Approved</td>
-                                                        <td>$200</td>
-                                                        <td><a href="shop-cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>June 12, 2017</td>
-                                                        <td>On Hold</td>
-                                                        <td>$990</td>
-                                                        <td><a href="shop-cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
+                                                    
+                                                    <?php
+                                                    if(is_array($listbill)){
+                                                        foreach($listbill as $bill){
+                                                            extract($bill);
+                                                            $ttdh=get_ttdh($bill['TrangThaiDH']);
+                                                            $countsp=loadall_cart_count($bill['MaHoaDon']);
+                                                            echo '
+                                                            <tr>
+                                                                <td>'.$bill['MaHoaDon'].'</td>
+                                                                <td>'.$bill['NgayHoaDon'].'</td>
+                                                                <td>'.$countsp.'</td>
+                                                                <td>'.$ttdh.'</td>
+                                                                <td>'.$bill['TongTienHD'].'</td>
+                                                                <td><a href="index.php?act=mybill&mahd='.$bill['MaHoaDon'].'" class="check-btn sqr-btn ">View</a></td>
+                                                    </tr>';
+                                                        }
+                                                    }
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>

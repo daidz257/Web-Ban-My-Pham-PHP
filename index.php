@@ -8,7 +8,7 @@ include "model/cart.php";
 include "view/header.php";
 include "global.php";
 
-if(!isset($_SESSION['mycart'])) $_SESSION['mycart']=[];
+if (!isset($_SESSION['mycart'])) $_SESSION['mycart'] = [];
 $spnew = loadall_sanpham_home();
 $dsdm =  loadall_danhmuc();
 $dstopsale = loadall_sanpham_topsale();
@@ -62,7 +62,7 @@ if ((isset($_GET['act'])) && ($_GET['act'] != "")) {
                 if (is_array($checkuser)) {
                     $_SESSION['user'] = $checkuser;
                     extract($_SESSION['user']);
-                    if ($LoaiUser==0){
+                    if ($LoaiUser == 0) {
                         echo '<script>window.location.href = "index.php";</script>';
                     };
                     //include "view/taikhoan/my-account.php";
@@ -87,6 +87,7 @@ if ((isset($_GET['act'])) && ($_GET['act'] != "")) {
                 $_SESSION['user'] = checkuser($email, $pass);
                 echo '<script>window.location.href = "index.php?act=my-account";</script>';
             }
+            $listbill = loadall_bill($_SESSION['user']['MaKhachHang']);
             include "view/taikhoan/my-account.php";
             break;
         case 'addtocart':
@@ -96,18 +97,30 @@ if ((isset($_GET['act'])) && ($_GET['act'] != "")) {
                 $img = $_POST['img'];
                 $price = $_POST['price'];
                 $soluong = 1;
-                $ttien=$soluong * $price;
-                $spadd=[$id,$name,$img,$price,$soluong,$ttien];
-                array_push($_SESSION['mycart'],$spadd);
-                
+                $ttien = $soluong * $price;
+                $product_exists = false;
+                foreach ($_SESSION['mycart'] as &$item) {
+                    if ($item[0] == $id) { // So sánh với ID của sản phẩm
+                        $item[4]++; // Tăng số lượng sản phẩm thêm 1
+                        $item[5] = $item[4] * $item[3]; // Cập nhật tổng tiền
+                        $product_exists = true;
+                        break;
+                    }
+                }
+                // Nếu sản phẩm không tồn tại trong giỏ hàng, thêm mới
+                if (!$product_exists) {
+                    $spadd = [$id, $name, $img, $price, $soluong, $ttien];
+                    array_push($_SESSION['mycart'], $spadd);
+                }
+                echo '<script>window.location.href = "index.php?act=index.php";</script>';
             }
             include 'view/cart/viewcart.php';
             break;
         case 'delcart':
-            if(isset($_GET['idcart'])) {
-                array_splice($_SESSION['mycart'],$_GET['idcart'],1);
-            }else{
-                $_SESSION['mycart']=[];
+            if (isset($_GET['idcart'])) {
+                array_splice($_SESSION['mycart'], $_GET['idcart'], 1);
+            } else {
+                $_SESSION['mycart'] = [];
             }
             echo '<script>window.location.href = "index.php?act=viewcart";</script>';
             break;
@@ -117,19 +130,36 @@ if ((isset($_GET['act'])) && ($_GET['act'] != "")) {
         case 'billconfirm':
             //tao bill
             if (isset($_POST['dongydathang']) && ($_POST['dongydathang'])) {
-                $name=$_POST['name'];
-                $email=$_POST['email'];
-                $address=$_POST['address'];
-                $tel=$_POST['tel'];
-                $pttt=$_POST['pttt'];
-                $note=$_POST['note'];
-                $ngaydathang=$_POST['h:i:sa d/m/Y'];
-                $tongdonhang=tongdonhang();
+                if (isset($_SESSION['user'])) $iduser = $_SESSION['user']['MaKhachHang'];
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $address = $_POST['address'];
+                $tel = $_POST['tel'];
+                $pttt = $_POST['pttt'];
+                $note = $_POST['note'];
+                $ngaydathang = date('h:i:sa d/m/Y');
+                $tongdonhang = tongdonhang();
 
-                $idbill=insert_bill($name, $email,$address,$tel,$pttt,$ngaydathang,$tongdonhang,$note,$ttien);
-
+                $idbill = insert_bill($iduser, $name, $email, $address, $tel, $pttt, $ngaydathang, $tongdonhang, $note);
                 //insert into cart: $session['mycart']&idbill
+                foreach ($_SESSION['mycart'] as $cart) {
+                    insert_cart($cart[0], $cart[3], $cart[4], $idbill);
+                    update_soluong($cart[0], $cart[4]);
+                }
+                //xoa session cart
+                $_SESSION['mycart'] = [];
             }
+            $bill = loadone_bill($idbill);
+            $billct = loadall_cart($idbill);
+            include "view/cart/billconfirm.php";
+            break;
+        case 'mybill':
+            if (isset($_GET['mahd']) && ($_GET['mahd'] != null)) {
+                $idhd = $_GET['mahd'];
+                $listcart = loadall_cart_bill($_SESSION['user']['MaKhachHang'], $idhd);
+            }
+            include "view/cart/mybill.php";
+            break;
         case 'viewcart':
             include "view/cart/viewcart.php";
             break;
